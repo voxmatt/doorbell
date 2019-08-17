@@ -121,4 +121,10 @@ class GateLatch {
       Characteristic.LockCurrentState.SECURED);
   }
 
+  //~-~-~-~-~-~-~-~-~-~-~-~-
+  // Expose it to Homebridge
+  //~-~-~-~-~-~-~-~-~-~-~-~-
+  public getServices = () => {
+    return [this.lockService];
+  }
 }
