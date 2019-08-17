@@ -56,3 +56,5 @@ __generated__
 
 # vs code runner plugin
 tempCodeRunnerFile.javascript
+
+package-lock.json

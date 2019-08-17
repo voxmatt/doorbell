@@ -1,9 +1,15 @@
+## About 
+This project contains two related elements. Really, these two elements should be pulled into separate repos, but this is just a weekend hobby project... so, you know, convenience and what-not.
+
+1. `door-server.py` this is the server that runs locally on the raspberry pi in order to monitor the status of the connected automation hat and the doorbell itself. This should be installed and run on the raspberyy pi itself.
+2. (everything else) is the homebridge plugin to enable communication between the doorbell accessory and the homebridge
+
 ## Administration on the Raspberry Pi
 
-*To SSH:*
+**To SSH:**
 
 1. Make sure the Raspberry Pi is running
-2. Run `ssh pi@raspberrypi.local` in a terminal windo
+2. Run `ssh pi@raspberrypi.local` in a terminal window
 3. Enter the password for the Raspberry Pi
 
 Homebridge config on the Raspberry Pi is configured here

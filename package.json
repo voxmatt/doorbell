@@ -1,22 +1,37 @@
 {
-  "name": "doorbell",
+  "name": "homebridge-hobby-doorbell",
   "version": "1.0.0",
-  "description": "Raspberry Pi doorbell",
-  "main": "door-accessory.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "author": "voxmatt",
+  "description": "Doorbell plugin for Homebridge to enable control of an old doorbell and front-gate latch",
+  "license": "ISC",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voxmatt/doorbell.git"
   },
-  "author": "voxmatt",
-  "license": "ISC",
   "bugs": {
     "url": "https://github.com/voxmatt/doorbell/issues"
   },
   "homepage": "https://github.com/voxmatt/doorbell#readme",
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.2.0"
+  },
+  "main": "dist/index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build"
+  },
   "dependencies": {
     "python-shell": "^1.0.8"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.2",
+    "@types/python-shell": "^0.4.2",
+    "prettier": "^1.18.2",
+    "typescript": "^3.5.3"
   }
 }
