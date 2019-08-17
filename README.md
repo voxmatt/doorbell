@@ -21,6 +21,9 @@ Homebridge config on the Raspberry Pi is configured here
 
 To shutdown run: `sudo shutdown -h now`
 
+To run the plugin locally on the raspberry pi (instead of from npm):
+`DEBUG=* /usr/bin/homebridge -D -P doorbell/`
+
 ## Some helpful articles:
 
 - Creating a homekit plugin)[https://blog.theodo.com/2017/08/make-siri-perfect-home-companion-devices-not-supported-apple-homekit/]
