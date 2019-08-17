@@ -1,5 +1,12 @@
-import {PythonShell} from 'python-shell'
+import { InitDoorbellInterface } from './doorbell-interface';
+
 let Service, Characteristic;
+
+// NOTE: these MUST match the string commands in door-monitor.py
+enum DoorbellCommands {
+  Lock = 'lock',
+  Unlock = 'unlock'
+}
 
 module.exports = function (homebridge) {
   Service = homebridge.hap.Service;
@@ -13,23 +20,16 @@ class Doorbell {
   // class variables
   private log: Function;
   private name: string;
-  private pyShell: PythonShell;
+  private doorbellInterface: ReturnType<typeof InitDoorbellInterface>;
 
   constructor(log, config) {
     this.log = log;
     this.name = config["name"];
-
-    const pyShell = new PythonShell('../door-server.py', {
-      mode: 'text',
-      pythonPath: '/usr/bin/python3',
-      pythonOptions: ['-u'],
-      scriptPath: 'python/',
-    });
-    pyShell
+    this.doorbellInterface = InitDoorbellInterface();
   }
 
-  public getState = (callback) => {
+  public lock = () => {
     this.log('Getting current state...');
-    this.pyShell
+    this.doorbellInterface.send('lock');
   }
 }

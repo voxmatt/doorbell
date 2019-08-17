@@ -28,14 +28,22 @@ def run_loop(command_queue):
     run_command(command_queue)
     read_doorbell(thread_local)
 
-
-def run_command(command_queue):
+def try_command(command_queue):
   try:
     command = command_queue.get(timeout=0.5)
   except queue.Empty:
     pass
   else:
-    automationhat.relay.on() if command == "unlock" else automationhat.relay.off()
+    run_command(command)
+
+def run_command(command):
+  if command == "unlock":
+    automationhat.relay.one.on()
+  elif command == "lock":
+    automationhat.relay.one.off()
+  elif command == "status":
+    automationhat.relay.one.read()
+
 
 
 def read_doorbell(thread_local):
