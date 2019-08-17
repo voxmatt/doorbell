@@ -4,6 +4,9 @@
   "author": "voxmatt",
   "description": "Doorbell plugin for Homebridge to enable control of an old doorbell and front-gate latch",
   "license": "ISC",
+  "keywords": [
+    "homebridge-plugin"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/voxmatt/doorbell.git"
