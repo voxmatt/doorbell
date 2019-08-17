@@ -1,5 +1,6 @@
 {
 	"compilerOptions": {
+		"outDir": "dist",
 		// Target latest version of ECMAScript.
 		"target": "esnext",
 		// Allow features like dynamic import().

@@ -37,14 +37,12 @@ def try_command(command_queue):
     run_command(command)
 
 def run_command(command):
-  if command == "unlock":
+  if command == "latch_unlock":
     automationhat.relay.one.on()
-  elif command == "lock":
+    print("latch_is_unlocked")
+  elif command == "latch_lock":
     automationhat.relay.one.off()
-  elif command == "status":
-    automationhat.relay.one.read()
-
-
+    print("latch_is_locked")
 
 def read_doorbell(thread_local):
   doorbell_on_state = automationhat.input.one.read() == 1
