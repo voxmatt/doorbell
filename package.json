@@ -1,6 +1,6 @@
 {
   "name": "homebridge-gate-latch",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "author": "voxmatt",
   "description": "Doorbell plugin for Homebridge to enable control of an old doorbell and front-gate latch",
   "license": "ISC",
