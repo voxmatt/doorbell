@@ -70,6 +70,7 @@ class GateLatch {
             }, this.latchUnlockPeriod);
         };
         this.listenToDoor = () => {
+            this.log("listening for messages");
             this.doorbellInterface.on('message', (message) => {
                 this.log(message);
             });
