@@ -24,7 +24,6 @@ module.exports = function (homebridge) {
   homebridge.registerAccessory("homebridge-gate-latch", "GateLatch", GateLatch);
 }
 
-
 //////////////////////////////
 // GateLatch CLASS
 //////////////////////////////

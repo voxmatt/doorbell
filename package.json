@@ -1,5 +1,5 @@
 {
-  "name": "homebridge-hobby-doorbell",
+  "name": "homebridge-gate-latch",
   "version": "1.0.0",
   "author": "voxmatt",
   "description": "Doorbell plugin for Homebridge to enable control of an old doorbell and front-gate latch",
