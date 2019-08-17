@@ -4,7 +4,7 @@
 		// Target latest version of ECMAScript.
 		"target": "es6",
 		// Allow features like dynamic import().
-		"module": "es6",
+		"module": "commonjs",
 		// Search under node_modules for non-relative imports.
 		"moduleResolution": "node",
 		// Process & infer types from .js files.
