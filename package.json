@@ -22,8 +22,7 @@
   ],
   "scripts": {
     "dev": "tsc -w",
-    "build": "rollup -c",
-    "prepublishOnly": "npm run build"
+    "build": "tsc"
   },
   "dependencies": {
     "python-shell": "^1.0.8"
