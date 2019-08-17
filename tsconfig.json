@@ -2,9 +2,9 @@
 	"compilerOptions": {
 		"outDir": "dist",
 		// Target latest version of ECMAScript.
-		"target": "esnext",
+		"target": "es6",
 		// Allow features like dynamic import().
-		"module": "esnext",
+		"module": "es6",
 		// Search under node_modules for non-relative imports.
 		"moduleResolution": "node",
 		// Process & infer types from .js files.
