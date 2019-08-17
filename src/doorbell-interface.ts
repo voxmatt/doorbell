@@ -7,6 +7,6 @@ export const InitDoorbellInterface = () => {
     mode: 'text',
     pythonPath: '/usr/bin/python3',
     pythonOptions: ['-u'],
-    scriptPath: '/usr/lib/node_modules/homebridge-gate-latch/',  
+    scriptPath: '/usr/lib/node_modules/homebridge-gate-latch/dist/',  
   });
 }
