@@ -42,7 +42,7 @@ class GateLatch {
   //~-~-~-~-~-~-~-~-~-~-~-~-
   // Constructor
   //~-~-~-~-~-~-~-~-~-~-~-~-
-  constructor(log, config) {
+  constructor(log: typeof console.log, config: JSON) {
     this.log = log;
     this.name = config["name"];
     this.gateLatchInterface = InitGateLatchInterface();
