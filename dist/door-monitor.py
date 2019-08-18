@@ -25,7 +25,7 @@ def run_loop(command_queue):
   thread_local.doorbell_on_state = False
 
   while True:
-    run_command(command_queue)
+    try_command(command_queue)
     read_doorbell(thread_local)
 
 def try_command(command_queue):
@@ -43,8 +43,8 @@ def run_command(command):
   elif command == "latch_lock":
     automationhat.relay.one.off()
     print("latch_is_locked")
-  elif command:
-    print(command);
+  elif isinstance(command, str):
+    print(command)
 
 def read_doorbell(thread_local):
   doorbell_on_state = automationhat.input.one.read() == 1
@@ -52,7 +52,6 @@ def read_doorbell(thread_local):
   if doorbell_on_state != thread_local.doorbell_on_state:
     thread_local.doorbell_on_state = doorbell_on_state
     print("doorbell_on") if doorbell_on_state else print("doorbell_off")
-
 
 if __name__ == "__main__":
   main()
