@@ -1,7 +1,7 @@
 //////////////////////////////
 // CONFIG
 //////////////////////////////
-import { InitDoorbellInterface } from './doorbell-interface';
+import { InitGateLatchInterface } from './gate-latch-interface';
 let Service, Characteristic;
 
 // NOTE: these MUST match the string commands in door-monitor.py
@@ -12,8 +12,6 @@ enum GateLatchCommands {
 }
 
 enum GateLatchMessages {
-  LatchIsUnlocked = 'latch_is_unlocked',
-  LatchIsLocked = 'latch_is_locked',
   DoorbellIsOn = 'doorbell_is_on',
   DoorbellIsOff = 'doorbell_is_off',
 }
@@ -37,8 +35,9 @@ class GateLatch {
   // class variables
   private log: Function;
   private name: string;
-  private doorbellInterface: ReturnType<typeof InitDoorbellInterface>;
+  private gateLatchInterface: ReturnType<typeof InitGateLatchInterface>;
   private lockService: any;
+  private doorbellService: any;
 
   //~-~-~-~-~-~-~-~-~-~-~-~-
   // Constructor
@@ -46,16 +45,17 @@ class GateLatch {
   constructor(log, config) {
     this.log = log;
     this.name = config["name"];
-    this.doorbellInterface = InitDoorbellInterface();
+    this.gateLatchInterface = InitGateLatchInterface();
     this.listenToDoor();
     this.lockService = this.createLockService(this.name);
+    this.doorbellService = this.createDoorbellService(this.name);
   }
 
   //~-~-~-~-~-~-~-~-~-~-~-~-
   // Service Setup
   //~-~-~-~-~-~-~-~-~-~-~-~-
   private createLockService = (name: string) => {
-    const lockService = new Service.LockMechanism(this.name, "Gate");
+    const lockService = new Service.LockMechanism(name, "Gate");
     lockService
       .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.SECURED) // force initial state
       .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED)
@@ -67,13 +67,17 @@ class GateLatch {
     return lockService;
   }
 
+  private createDoorbellService = (name: string) => {
+    return new Service.Doorbell(name, "Doorbell");
+  }
+
   //~-~-~-~-~-~-~-~-~-~-~-~-
   // Private Helpers
   //~-~-~-~-~-~-~-~-~-~-~-~-
   // wrapper for sending a command via PythonShell to the Raspberry Pi
   private issueCommand = (command: GateLatchCommands) => {
     this.log(`Issuing command to "${command}"`);
-    this.doorbellInterface.send(command);
+    this.gateLatchInterface.send(command);
   }
 
   private scheduleUnlockTimeout = () => {
@@ -89,8 +93,19 @@ class GateLatch {
 
   private listenToDoor = () => {
     this.log("listening for messages")
-    this.doorbellInterface.on('message', (message) => {
-      this.log(message);
+    this.gateLatchInterface.on('message', (message) => {
+      switch (message) {
+        case GateLatchMessages.DoorbellIsOff:
+          this.log('doorbell stopped ringing');
+          return;
+        case GateLatchMessages.DoorbellIsOn:
+          this.log('doorbell is ringing');
+          this.doorbellPress();
+          return;
+        default:
+          this.log(message);
+          return;
+      }
     });
   }
 
@@ -121,10 +136,27 @@ class GateLatch {
       Characteristic.LockCurrentState.SECURED);
   }
 
+  public doorbellPress = () => {
+    this.doorbellService
+      .setCharacteristic(Characteristic.ProgrammableSwitchEvent,
+        Characteristic.ProgrammableSwitchEvent.SINGLE_PRESS);
+  }
+
   //~-~-~-~-~-~-~-~-~-~-~-~-
   // Expose it to Homebridge
   //~-~-~-~-~-~-~-~-~-~-~-~-
   public getServices = () => {
-    return [this.lockService];
+    // doorbells are now required to have a camera, speaker, and mic
+    const pseudoCam = new Service.CameraRTPStreamManagement(this.name, 'Pseudo-Camera');
+    const pseudoSpeaker  = new Service.Speaker(this.name, 'Pseudo-Speaker');
+    const pseudoMic  = new Service.Microphone(this.name, 'Pseudo-Microphone');
+
+    return [
+      this.lockService,
+      this.doorbellService,
+      pseudoCam,
+      pseudoSpeaker,
+      pseudoMic,
+    ];
   }
 }

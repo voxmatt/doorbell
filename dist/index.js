@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 //////////////////////////////
 // CONFIG
 //////////////////////////////
-const doorbell_interface_1 = require("./doorbell-interface");
+const gate_latch_interface_1 = require("./gate-latch-interface");
 let Service, Characteristic;
 // NOTE: these MUST match the string commands in door-monitor.py
 var GateLatchCommands;
@@ -14,8 +14,6 @@ var GateLatchCommands;
 })(GateLatchCommands || (GateLatchCommands = {}));
 var GateLatchMessages;
 (function (GateLatchMessages) {
-    GateLatchMessages["LatchIsUnlocked"] = "latch_is_unlocked";
-    GateLatchMessages["LatchIsLocked"] = "latch_is_locked";
     GateLatchMessages["DoorbellIsOn"] = "doorbell_is_on";
     GateLatchMessages["DoorbellIsOff"] = "doorbell_is_off";
 })(GateLatchMessages || (GateLatchMessages = {}));
@@ -41,7 +39,7 @@ class GateLatch {
         // Service Setup
         //~-~-~-~-~-~-~-~-~-~-~-~-
         this.createLockService = (name) => {
-            const lockService = new Service.LockMechanism(this.name, "Gate");
+            const lockService = new Service.LockMechanism(name, "Gate");
             lockService
                 .setCharacteristic(Characteristic.LockTargetState, Characteristic.LockTargetState.SECURED) // force initial state
                 .setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED)
@@ -52,13 +50,16 @@ class GateLatch {
             });
             return lockService;
         };
+        this.createDoorbellService = (name) => {
+            return new Service.Doorbell(name, "Doorbell");
+        };
         //~-~-~-~-~-~-~-~-~-~-~-~-
         // Private Helpers
         //~-~-~-~-~-~-~-~-~-~-~-~-
         // wrapper for sending a command via PythonShell to the Raspberry Pi
         this.issueCommand = (command) => {
             this.log(`Issuing command to "${command}"`);
-            this.doorbellInterface.send(command);
+            this.gateLatchInterface.send(command);
         };
         this.scheduleUnlockTimeout = () => {
             if (this.latchUnlockTimeout) {
@@ -71,8 +72,19 @@ class GateLatch {
         };
         this.listenToDoor = () => {
             this.log("listening for messages");
-            this.doorbellInterface.on('message', (message) => {
-                this.log(message);
+            this.gateLatchInterface.on('message', (message) => {
+                switch (message) {
+                    case GateLatchMessages.DoorbellIsOff:
+                        this.log('doorbell stopped ringing');
+                        return;
+                    case GateLatchMessages.DoorbellIsOn:
+                        this.log('doorbell is ringing');
+                        this.doorbellPress();
+                        return;
+                    default:
+                        this.log(message);
+                        return;
+                }
             });
         };
         this.setLatchTargetState = (value) => {
@@ -97,16 +109,31 @@ class GateLatch {
             this.issueCommand(GateLatchCommands.LatchLock);
             this.lockService.setCharacteristic(Characteristic.LockCurrentState, Characteristic.LockCurrentState.SECURED);
         };
+        this.doorbellPress = () => {
+            this.doorbellService
+                .setCharacteristic(Characteristic.ProgrammableSwitchEvent, Characteristic.ProgrammableSwitchEvent.SINGLE_PRESS);
+        };
         //~-~-~-~-~-~-~-~-~-~-~-~-
         // Expose it to Homebridge
         //~-~-~-~-~-~-~-~-~-~-~-~-
         this.getServices = () => {
-            return [this.lockService];
+            // doorbells are now required to have a camera, speaker, and mic
+            const pseudoCam = new Service.CameraRTPStreamManagement(this.name, 'Pseudo-Camera');
+            const pseudoSpeaker = new Service.Speaker(this.name, 'Pseudo-Speaker');
+            const pseudoMic = new Service.Microphone(this.name, 'Pseudo-Microphone');
+            return [
+                this.lockService,
+                this.doorbellService,
+                pseudoCam,
+                pseudoSpeaker,
+                pseudoMic,
+            ];
         };
         this.log = log;
         this.name = config["name"];
-        this.doorbellInterface = doorbell_interface_1.InitDoorbellInterface();
+        this.gateLatchInterface = gate_latch_interface_1.InitGateLatchInterface();
         this.listenToDoor();
         this.lockService = this.createLockService(this.name);
+        this.doorbellService = this.createDoorbellService(this.name);
     }
 }

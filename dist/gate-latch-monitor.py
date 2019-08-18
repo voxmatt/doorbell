@@ -51,7 +51,7 @@ def read_doorbell(thread_local):
 
   if doorbell_on_state != thread_local.doorbell_on_state:
     thread_local.doorbell_on_state = doorbell_on_state
-    print("doorbell_on") if doorbell_on_state else print("doorbell_off")
+    print("doorbell_is_on") if doorbell_on_state else print("doorbell_is_off")
 
 if __name__ == "__main__":
   main()
