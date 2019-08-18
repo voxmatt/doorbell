@@ -1,10 +1,5 @@
 ## About 
-This project contains two related elements. Really, these two elements should be pulled into separate repos, but this is just a weekend hobby project... so, you know, convenience and what-not.
-
-1. `door-server.py` this is the server that runs locally on the raspberry pi in order to monitor the status of the connected automation hat and the doorbell itself. This should be installed and run on the raspberyy pi itself.
-2. (everything else) is the homebridge plugin to enable communication between the doorbell accessory and the homebridge
-
-Note that because this has local dependencies and isn't intended to be published as a true homebridge-plugin, it must be installed at a particular directory: `~/doorbell/`
+A Homebridge plugin for a Raspberry Pi with an Automation Hat that is controlling an old, buzzer-activated door gate. Directly inspired by (this article)[https://medium.com/dirigible/siri-controlled-1970s-intercom-door-ecd7a6b0df31]. Please note that this plugin represents only the software component. The hardware is a different manner entirely, but is explained in the above mentioned article. Maybe I'll get around to detailing it someday...
 
 ## Administration on the Raspberry Pi
 
@@ -26,8 +21,5 @@ To run the plugin locally on the raspberry pi (instead of from npm):
 
 ## Some helpful articles:
 
-- Creating a homekit plugin)[https://blog.theodo.com/2017/08/make-siri-perfect-home-companion-devices-not-supported-apple-homekit/]
-
-## Debugging
-
-Hardcoded filepaths exist in `/src/doorbell-interface.ts`. These are obviously fragile.
+- (Siri Controlled 1970s Intercom Door)[https://medium.com/dirigible/siri-controlled-1970s-intercom-door-ecd7a6b0df31]
+- (Creating a homekit plugin)[https://blog.theodo.com/2017/08/make-siri-perfect-home-companion-devices-not-supported-apple-homekit/]

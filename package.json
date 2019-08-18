@@ -1,6 +1,6 @@
 {
   "name": "homebridge-gate-latch",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "author": "voxmatt",
   "description": "Doorbell plugin for Homebridge to enable control of an old doorbell and front-gate latch",
   "license": "ISC",
@@ -25,7 +25,9 @@
   ],
   "scripts": {
     "dev": "tsc -w",
-    "build": "tsc"
+    "dist:clean": "rm -rf dist && mkdir dist && cp src/gate-latch-monitor.py dist/gate-latch-monitor.py ",
+    "build": "npm run dist:clean && tsc",
+    "prepublish": "npm run build"
   },
   "dependencies": {
     "python-shell": "^1.0.8"
