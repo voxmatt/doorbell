@@ -1,5 +1,5 @@
 ## About 
-A Homebridge plugin for a Raspberry Pi with an Automation Hat that is controlling an old, buzzer-activated door gate. Directly inspired by (this article)[https://medium.com/dirigible/siri-controlled-1970s-intercom-door-ecd7a6b0df31]. Please note that this plugin represents only the software component. The hardware is a different manner entirely, but is explained in the above mentioned article. Maybe I'll get around to detailing it someday...
+A Homebridge plugin for a Raspberry Pi with an Automation Hat that is controlling an old, buzzer-activated door gate. Directly inspired by [this article](https://medium.com/dirigible/siri-controlled-1970s-intercom-door-ecd7a6b0df31) Please note that this plugin represents only the software component. The hardware is a different manner entirely, but is explained in the above mentioned article. Maybe I'll get around to detailing it someday...
 
 ## Administration on the Raspberry Pi
 
@@ -35,6 +35,6 @@ systemctl status homebridge
 
 ## Some helpful articles:
 
-- (Siri Controlled 1970s Intercom Door)[https://medium.com/dirigible/siri-controlled-1970s-intercom-door-ecd7a6b0df31]
-- (Creating a homekit plugin)[https://blog.theodo.com/2017/08/make-siri-perfect-home-companion-devices-not-supported-apple-homekit/]
-- (Instructions to boot homebridge on startup of the raspberry pi)[https://gist.github.com/johannrichard/0ad0de1feb6adb9eb61a/]
+- [Siri Controlled 1970s Intercom Door](https://medium.com/dirigible/siri-controlled-1970s-intercom-door-ecd7a6b0df31)
+- [Creating a homekit plugin](https://blog.theodo.com/2017/08/make-siri-perfect-home-companion-devices-not-supported-apple-homekit/)
+- [Instructions to boot homebridge on startup of the raspberry pi](https://gist.github.com/johannrichard/0ad0de1feb6adb9eb61a/)
